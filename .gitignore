@@ -91,3 +91,6 @@ ENV/
 
 *-data.inc
 src/**/*.py.bak
+
+# VSCode
+.vscode
