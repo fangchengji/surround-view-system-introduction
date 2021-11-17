@@ -25,7 +25,7 @@
 #define HALF_VEHICLE_W VEHICLE_W / 2
 #define AVM_PIXEL_SIZE 15 
 
-#define DISTORTION_FILE "distortion.txt"
+#define DISTORTION_FILE "../data/m01_distortion.txt"
 
 namespace svs {
 
@@ -41,7 +41,7 @@ struct Interval {
 class SurroundViewStitcher {
 public:
   SurroundViewStitcher() {
-    // TODO: set params by config file.
+    // TODO: set all params by config file.
 
     camera_pixel_size_ = PIXEL_SIZE;
     correct_pixel_size_ = CORRECTPS;

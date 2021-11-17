@@ -31,9 +31,16 @@ add_library(SurroundViewStitching STATIC ${HEADERS} ${SOURCES})
 set_target_properties(SurroundViewStitching
                       PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
  
-# test program
-add_executable(test src/test.cpp)
+# test stitch
+add_executable(test_stitch src/test_stitch.cpp)
  
-set_property(TARGET test 
+set_property(TARGET test_stitch 
              PROPERTY CUDA_SEPARABLE_COMPILATION ON)
-target_link_libraries(test PRIVATE SurroundViewStitching ${OpenCV_LIBS})
+target_link_libraries(test_stitch PRIVATE SurroundViewStitching ${OpenCV_LIBS})
+
+# test undist
+add_executable(test_undist src/test_undist.cpp)
+ 
+set_property(TARGET test_undist 
+             PROPERTY CUDA_SEPARABLE_COMPILATION ON)
+target_link_libraries(test_undist PRIVATE SurroundViewStitching ${OpenCV_LIBS})
