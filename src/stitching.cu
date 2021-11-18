@@ -1,4 +1,4 @@
-
+#include "stitching.h"
 
 namespace svs {
 

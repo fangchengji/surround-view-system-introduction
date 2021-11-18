@@ -115,7 +115,7 @@ public:
     dst_luts.clear();
     for (int i = 0; i < SVS_CAMERA_NUM; ++i) {
       cv::Mat undist_lut;
-      undistortion_lut(image_size_, correct_size_, camera_pixel_size_, correct_pixel_size_, 
+      calculate_undistortion_lut(image_size_, correct_size_, camera_pixel_size_, correct_pixel_size_, 
         img_centers_[i], dp_, undist_lut);
       dst_luts.push_back(undist_lut);
     }
