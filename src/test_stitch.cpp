@@ -5,14 +5,14 @@
 //#include <opencv2/core.hpp>
 //#include <opencv2/highgui.hpp>
 
-#include "surround_view_stitcher.hpp"
+#include "surround_view_stitcher_x01.hpp"
 #include "stitching.h"
 
 int main( int argc, char** argv ) {
-  std::string base_dir = "../chessboard/";
+  std::string base_dir = "../x01_avm/";
   if( argc != 2) {
     std::cout << "Usage: test_stitch <img_base_dir>" << std::endl;
-    std::cout << "Use default base dir: ../chessboard/" << std::endl;
+    std::cout << "Use default base dir: ../x01_avm/" << std::endl;
   } else {
     base_dir = argv[1];
   }
@@ -26,7 +26,7 @@ int main( int argc, char** argv ) {
   }
 
   // test stitch
-  svs::SurroundViewStitcher stitcher;
+  svs::SurroundViewStitcherX01 stitcher;
   cv::Mat out_img;
   // stitcher.run(imgs, out_img);
   cv::Mat geo_lut;

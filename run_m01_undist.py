@@ -59,6 +59,7 @@ def find_real_r(ref_r):
 
 def fisheye_undistort_lut(img_size, new_pixel_size):
     # "fish eye distortion"
+    f = 1.29
     pixel_size = 0.0042
     new_pixel_size = new_pixel_size
     height_in, width_in = img_size
@@ -82,6 +83,10 @@ def fisheye_undistort_lut(img_size, new_pixel_size):
 
             src_x = x * k
             src_y = y * k
+            # theta = math.atan2(src_x * pixel_size, f)
+            # src_x = f * theta
+            # src_y = src_y * math.cos(theta)
+
             src_x = src_x + width_in / 2
             src_y = src_y + height_in / 2
             if src_x >= 0 and src_x < width_in and src_y >= 0 and src_y < height_in:
@@ -110,8 +115,8 @@ if __name__ == "__main__":
         img = cv2.imread(img_path)
         if i == 0:
             f = 1.29
-            new_pixel_size = 0.00975  # 9.75um
-            # new_pixel_size = 0.0042  # 8.4um
+            # new_pixel_size = 0.00975  # 9.75um
+            new_pixel_size = 0.0042  # 4.2um
             height_in, width_in, _ = img.shape
             lut_undist = fisheye_undistort_lut((height_in, width_in),
                                                new_pixel_size)

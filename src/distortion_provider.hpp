@@ -5,6 +5,7 @@
 #include <string>
 #include <algorithm>
 #include <cassert>
+#include <math.h>
 
 #include "file.h"
 
@@ -34,7 +35,7 @@ public:
 
   bool get(const float &ref_radius, float& ref_dist) const {
     if (!initialized_) {
-      printf("Please init DistortionProvider before use it!!\n");
+      // printf("Please init DistortionProvider before use it!!\n");
       return false;
     }
 
@@ -62,18 +63,39 @@ public:
     return true;
   }
 
-private:
-  bool parse_table(const std::vector<std::vector<std::string>> &tables) {
-    if (tables.size() != len_ + 1) {
+  bool get_by_angle(const float &angle, float &dist) const {
+    if (angle > angles_.back()) {
+      printf("The input angle %f is out of range!!\n", angle);
       return false;
     }
+
+    if (angle <= angles_.front()) {
+      dist = 0.0;
+    } else {
+      // look up table and linear interpolation
+      auto low = std::lower_bound(angles_.begin(), angles_.end(), angle);
+      int idx = low - angles_.begin();
+      assert(idx > 0);
+      float ratio = (angle - angles_[idx - 1]) / (angles_[idx] - angles_[idx - 1]);
+      dist = (distortions_[idx] - distortions_[idx - 1]) * ratio + distortions_[idx - 1];
+    }
+    return true;
+  }
+
+private:
+  bool parse_table(const std::vector<std::vector<std::string>> &tables) {
+    // if (tables.size() != len_ + 1) {
+    //   return false;
+    // }
 
     distortions_.clear();
     paraxial_heights_.clear();
     for (int i = 1; i < valid_len_ + 1; ++i) {
+      float angle = std::stof(tables[i][0]) * M_PI / 180.0;            // angle
       float paraxial_height = std::stof(tables[i][1]);   //paraxial height
-      float dist = std::stof(tables[i][3]) * 0.01;      // distortion ratio
+      float dist = std::stof(tables[i][2]) * 0.01;      // distortion ratio
 
+      angles_.push_back(angle);
       paraxial_heights_.push_back(paraxial_height);
       distortions_.push_back(dist);
     }
@@ -85,9 +107,10 @@ private:
   std::string fp_;
   bool initialized_;
 
-  const int len_ = 1000;
+  // const int len_ = 1000;
   const int valid_len_ = 900;
   // const float max_radius_ = 369.0f;     // max radius, unit mm
+  std::vector<float> angles_;
   std::vector<float> distortions_;
   std::vector<float> paraxial_heights_;
 };
